@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export default function ajax (url, data = {}, type = 'GET') {
   return new Promise((resolve, reject) => {
+    if (!url.includes('login')) axiosInterceptor()
     let promise
     // get请求
     if (type === 'GET') {
@@ -14,9 +15,10 @@ export default function ajax (url, data = {}, type = 'GET') {
         url = url + '?' + dataParams
       }
       promise = axios.get(url)
+    } else {
+      // post请求
+      promise = axios.post(url, data)
     }
-    // post请求
-    promise = axios.post(url, data)
 
     // 处理结果
     promise.then(result => {
@@ -24,5 +26,12 @@ export default function ajax (url, data = {}, type = 'GET') {
     }).catch(err => {
       reject(err)
     })
+  })
+}
+
+function axiosInterceptor () {
+  axios.interceptors.request.use(config => {
+    config.headers.Authorization = window.sessionStorage.getItem('token')
+    return config
   })
 }

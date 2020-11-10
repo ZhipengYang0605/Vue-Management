@@ -16,12 +16,18 @@
                  class="demo-ruleForm">
           <el-form-item prop="username"
                         label="账号">
-            <el-input v-model="loginForm.username"></el-input>
+            <el-input v-model="loginForm.username">
+              <i slot="prefix"
+                 class="iconfont iconicon-user"></i>
+            </el-input>
           </el-form-item>
           <el-form-item prop="password"
                         label="密码">
             <el-input v-model="loginForm.password"
-                      type="password"></el-input>
+                      type="password">
+              <i slot="prefix"
+                 class="iconfont iconIOTtubiao_huabanfuben"></i>
+            </el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -38,7 +44,7 @@
 </template>
 
 <script>
-import { requstLogin } from './../api/index'
+// import { requstLogin } from './../api/index'
 export default {
   name: 'Login',
   data () {
@@ -68,7 +74,7 @@ export default {
     handleLogin () {
       this.$refs.ruleForm.validate(async valid => {
         if (!valid) return false
-        const { data } = await requstLogin(this.loginForm)
+        const { data } = await this.$http.post('login', this.loginForm)
         if (data.meta.status !== 200) return this.$message.error('登录失败！')
         this.$message.success('登录成功！')
         // 保存token
@@ -85,6 +91,7 @@ export default {
 #login
   position relative
   height 100vh
+  background #2b4b6b
   .wrapper
     height 360px
     width 450px

@@ -11,6 +11,4 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-// #id
-</style>
+<style lang="stylus"></style>
