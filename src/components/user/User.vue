@@ -115,6 +115,7 @@ export default {
       })
       if (res.meta.status !== 200) return this.$message.error('获取用户列表失败！')
       this.userList = res.data.users
+      console.log('test')
     },
 
     // 改变switch的状态
