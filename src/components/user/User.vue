@@ -104,6 +104,26 @@
         <el-button type="primary" @click="submmitAdd">确定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 角色分配弹框 -->
+    <el-dialog title="角色分配" :visible.sync="distributeDialogVisible" width="30%" @close="dialogClose">
+      <span>
+        <el-form ref="distributeFormRef" label-width="100px" class="demo-dynamic">
+          <p>当前的用户：{{userInfo.username}}</p>
+          <p>当前的角色：{{userInfo.role_name}}</p>
+          <p>分配新角色：
+            <el-select v-model="selectedRoleId" placeholder="请选择角色">
+              <el-option :label="item.roleName" :value="item.id" v-for="item in rolesList" :key="item.id"></el-option>
+            </el-select>
+          </p>
+        </el-form>
+      </span>
+      <!-- 取消/确定 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="distributeDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submmitDistribute">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -200,7 +220,19 @@ export default {
       // 当前页码
       currentPage: 1,
       // 用户列表总数
-      total: 0
+      total: 0,
+      // 分配角色
+      distributeDialogVisible: false,
+      // 下拉框当前选中的roleId
+      selectedRoleId: '',
+      // 角色列表
+      rolesList: [],
+      // 当前角色信息
+      userInfo: {
+        username: '',
+        role_name: '',
+        id: ''
+      }
     }
   },
   created () {
@@ -303,6 +335,29 @@ export default {
     handleCurrentChange (val) {
       this.queryInfo.pagenum = val
       this.getUserList()
+    },
+    // 分配角色并发起请求
+    async submmitDistribute () {
+      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, { rid: this.selectedRoleId })
+      console.log(res)
+      if (res.meta.status !== 200) return this.$message.error('分配角色失败！')
+      this.$message.success('分配角色成功！')
+      this.distributeDialogVisible = false
+      this.getUserList()
+    },
+    // 点击显示分配角色弹框
+    async handleSetting (user) {
+      // 显示弹框
+      this.distributeDialogVisible = true
+      // 获取角色列表
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) return this.$message.error('获取角色列表失败！')
+      this.rolesList = res.data
+      this.userInfo = user
+    },
+    // 分配角色弹框关闭时触发
+    dialogClose () {
+      this.selectedRoleId = ''
     }
   }
 }

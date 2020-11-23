@@ -11,4 +11,7 @@ export default {
 }
 </script>
 
-<style lang="stylus"></style>
+<style lang="stylus">
+#app
+  min-width 1200px
+</style>
