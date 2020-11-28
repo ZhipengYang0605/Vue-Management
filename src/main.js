@@ -4,6 +4,8 @@ import router from './router'
 import axios from 'axios'
 import './plugins/element.js'
 import '@/assets/css/globle.css'
+import ZkTable from 'vue-table-with-tree-grid'
+Vue.use(ZkTable)
 
 Vue.config.productionTip = false
 // 配置基本请求路径
