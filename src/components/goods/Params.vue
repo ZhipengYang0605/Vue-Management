@@ -35,10 +35,12 @@
                   {{item}}
                 </el-tag>
                 <!-- 输入框 -->
-                <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small"
-                  @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
+                <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue"
+                  ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm(scope.row)"
+                  @blur="handleInputConfirm(scope.row)">
                 </el-input>
-                <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag
+                </el-button>
               </template>
             </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
@@ -67,10 +69,12 @@
                   {{item}}
                 </el-tag>
                 <!-- 输入框 -->
-                <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small"
-                  @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
+                <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue"
+                  ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm(scope.row)"
+                  @blur="handleInputConfirm(scope.row)">
                 </el-input>
-                <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag
+                </el-button>
               </template>
             </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
@@ -182,10 +186,6 @@ export default {
       onlyFormRules: {
         attr_name: [{ required: true, message: '静态属性名不能为空！', trigger: 'blur' }]
       },
-      // tag输入框的显示/隐藏
-      inputVisible: false,
-      // 输入框的值
-      inputValue: '',
       // 编辑参数/属性弹框的显示与隐藏
       dialogVisible: false,
       // 修改静态属性/动态参数input
@@ -227,9 +227,12 @@ export default {
       // 处理AttrVals, 将字符串转化为数组
       res.data.forEach(v => {
         v.attr_vals = v.attr_vals ? v.attr_vals.split(' ') : []
+        v.inputVisible = false
+        v.inputValue = ''
       })
       // 赋值
       this.activeName === 'many' ? this.manyList = res.data : this.onlyList = res.data
+      console.log(res.data)
     },
     // 3.级联选择器发生改变时触发
     handleCascaderChange () {
@@ -277,26 +280,27 @@ export default {
       this.setAttrVals(row)
     },
     // 10.点击显示input输入框
-    showInput () {
-      this.inputVisible = true
+    showInput (row) {
+      console.log(row)
+      row.inputVisible = true
+      // this.inputVisible = true
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
     // 11.按下回车/失去焦点编辑成功
     handleInputConfirm (row) {
-      // 如果什么也没输入则不继续下去
-      if (!this.inputValue) {
-        this.inputVisible = false
+      if (!row.inputValue) {
+        row.inputVisible = false
         return false
       }
-      const inputValue = this.inputValue
+      const inputValue = row.inputValue
       if (inputValue) {
         row.attr_vals.push(inputValue)
       }
       this.setAttrVals(row)
-      this.inputVisible = false
-      this.inputValue = ''
+      row.inputVisible = false
+      row.inputValue = ''
     },
     // 12.将对attr_vals的操作保存到数据库中
     async setAttrVals (row) {
@@ -341,7 +345,6 @@ export default {
     },
     // 16. 删除分类名
     handleDelete (row) {
-      // categories/:id/attributes/:attrid
       this.$confirm('此操作将永久删除该分类, 是否继续?', '提示', {
         distinguishCancelAndClose: true,
         confirmButtonText: '删除',
