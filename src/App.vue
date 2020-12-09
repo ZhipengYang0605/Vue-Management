@@ -14,4 +14,6 @@ export default {
 <style lang="stylus">
 #app
   min-width 1200px
+.el-cascader-menu
+  height 300px !important
 </style>
