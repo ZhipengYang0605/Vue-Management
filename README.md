@@ -1,24 +1,45 @@
-# vue_shop
+## Zeke的后台管理系统
 
-## Project setup
-```
-npm install
-```
+##### 1.简介：
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+> 这是一款商城的后台管理系统。
+>
+> 技术栈：`Vue.js2.6 + elementUI + axios.js + router.js+stylus`
+>
+> 功能：
+>
+> - [ ] 用户管理
+>
+>   ​	用户列表
+>
+> - [ ] 权限管理
+>
+>   ​	角色列表
+>
+>   ​	权限列表
+>
+> - [ ] 商品管理
+>
+>   ​	商品列表
+>
+>   ​	分类参数
+>
+>   ​	商品分类
+>
+> - [ ] 订单管理
+>
+>   ​	订单列表
+>
+> - [ ] 数据统计
+>
+>   ​	数据报表
 
-### Compiles and minifies for production
-```
-npm run build
-```
+2. **如何运行**
 
-### Lints and fixes files
-```
-npm run lint
-```
+   前端：
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+   npm install
+
+   cd 
+
+   后端：
