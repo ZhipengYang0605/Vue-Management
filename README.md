@@ -38,8 +38,10 @@
 
    2.1 启动后端
 
+   [后端传送门](https://github.com/ZhipengYang0605/Vue-Management-Server.git)
+
+   2.2 启动前端
+
+   启动后端后，先将前端项目download或clone到本地，然后cd到Vue-Management目录下, 接着执行npm install，最后执行npm run      
    
-
-   cd 
-
-   后端：
+   serve就行啦！
