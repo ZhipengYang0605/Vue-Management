@@ -247,6 +247,7 @@ export default {
       if (res.meta.status !== 200) return this.$message.error('获取用户列表失败！')
       this.userList = res.data.users
       this.total = res.data.total
+      console.log(this.userList)
     },
 
     // 改变switch的状态
